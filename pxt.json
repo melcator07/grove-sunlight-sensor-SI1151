@@ -1,0 +1,60 @@
+{
+  "name": "grove-sunlight-sensor",
+  "version": "0.0.1",
+  "description": "MakeCode extension for the Grove Sunlight Sensor (SI1151)",
+  "license": "MIT",
+  "dependencies": {
+    "core": "*"
+  },
+  "files": [
+    "main.ts",
+    "README.md"
+  ],
+  "testFiles": [
+    "test.ts"
+  ],
+  "public": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Seeed-Studio/Grove_Sunlight_Sensor.git"
+  },
+  "targetVersions": {
+    "branch": "v1.0.0",
+    "target": "microbit"
+  },
+  "installedFiles": {
+    "main.ts": "// Full implementation for reading visible, infrared, and UV light
+namespace GroveSunlightSensor {
+    let SI1151_I2C_ADDR = 0x60;
+    function readRegister(reg: number): number {
+        pins.i2cWriteNumber(SI1151_I2C_ADDR, reg, NumberFormat.UInt8BE, true);
+        return pins.i2cReadNumber(SI1151_I2C_ADDR, NumberFormat.UInt16LE, false);
+    }
+    export function readVisibleLight(): number {
+        return readRegister(0x22);
+    }
+    export function readInfraredLight(): number {
+        return readRegister(0x24);
+    }
+    export function readUVIndex(): number {
+        return readRegister(0x2C) / 100; // Convert to standard UV index
+    }
+    // Blocks definition for MakeCode
+    //% block="read visible light"
+    //% group="Grove Sunlight Sensor"
+    export function getVisibleLight(): number {
+        return readVisibleLight();
+    }
+    //% block="read infrared light"
+    //% group="Grove Sunlight Sensor"
+    export function getInfraredLight(): number {
+        return readInfraredLight();
+    }
+    //% block="read UV index"
+    //% group="Grove Sunlight Sensor"
+    export function getUVIndex(): number {
+        return readUVIndex();
+    }
+}"
+  }
+}
